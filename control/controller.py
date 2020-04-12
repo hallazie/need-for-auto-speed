@@ -1,10 +1,12 @@
 # --*-- utf-8 --*--
 # @Author: Xiao Shanghua
 # @Date: 2020-04-12 13:33:08
-# @LastEditTime: 2020-04-12 13:42:04
+# @LastEditTime: 2020-04-12 14:06:12
 # @LastEditors: Xiao Shanghua
 # @Description: Controller for car
-# @FilePath: \machinelearning\vision\gta5-driver\control\controller.py
+# @FilePath: \machinelearning\vision\need-for-auto-speed\control\controller.py
+
+from keyboard import *
 
 import numpy as np
 
@@ -24,6 +26,33 @@ class Controller:
             current perception + hidden state -> current control stratage
         '''
         pass
+
+    def react_basic(self, direct):
+        if direct == 'left':
+            keyboard.release(D)
+            keyboard.release(S)
+            keyboard.press(W)
+            keyboard.press(A)
+        elif direct == 'right':
+            keyboard.release(A)
+            keyboard.release(S)
+            keyboard.press(W)
+            keyboard.press(D)
+        elif direct == 'forward':
+            keyboard.release(A)
+            keyboard.release(D)
+            keyboard.release(S)
+            keyboard.press(W)
+        elif direct == 'backward':
+            keyboard.release(A)
+            keyboard.release(D)
+            keyboard.release(W)
+            keyboard.press(S)
+        elif direct == 'stop':
+            keyboard.release(W)
+            keyboard.release(S)
+            keyboard.release(A)
+            keyboard.release(D)
 
 
 if __name__ == '__main__':

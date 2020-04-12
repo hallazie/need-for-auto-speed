@@ -1,10 +1,10 @@
 # --*-- utf-8 --*--
 # @Author: Xiao Shanghua
 # @Date: 2020-04-12 13:41:35
-# @LastEditTime: 2020-04-12 13:46:58
+# @LastEditTime: 2020-04-12 14:01:14
 # @LastEditors: Xiao Shanghua
 # @Description: using code from pygta5
-# @FilePath: \machinelearning\vision\gta5-driver\control\keyboard.py
+# @FilePath: \machinelearning\vision\need-for-auto-speed\control\keyboard.py
 
 from credef import *
 
@@ -43,3 +43,5 @@ class Keyboard:
         ii_.ki = KeyBdInput( 0, hex_key, 0x0008 | 0x0002, 0, ctypes.pointer(extra) )
         x = Input( ctypes.c_ulong(1), ii_ )
         ctypes.windll.user32.SendInput(1, ctypes.pointer(x), ctypes.sizeof(x))
+
+keyboard = Keyboard()
