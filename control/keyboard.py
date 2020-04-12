@@ -1,12 +1,12 @@
 # --*-- utf-8 --*--
 # @Author: Xiao Shanghua
 # @Date: 2020-04-12 13:41:35
-# @LastEditTime: 2020-04-12 14:01:14
+# @LastEditTime: 2020-04-12 21:53:38
 # @LastEditors: Xiao Shanghua
 # @Description: using code from pygta5
 # @FilePath: \machinelearning\vision\need-for-auto-speed\control\keyboard.py
 
-from credef import *
+from control.credef import *
 
 import time
 import ctypes

@@ -1,12 +1,12 @@
 # --*-- utf-8 --*--
 # @Author: Xiao Shanghua
 # @Date: 2020-04-12 13:33:08
-# @LastEditTime: 2020-04-12 14:06:12
+# @LastEditTime: 2020-04-12 21:53:08
 # @LastEditors: Xiao Shanghua
 # @Description: Controller for car
 # @FilePath: \machinelearning\vision\need-for-auto-speed\control\controller.py
 
-from keyboard import *
+from control.keyboard import *
 
 import numpy as np
 
@@ -54,6 +54,7 @@ class Controller:
             keyboard.release(A)
             keyboard.release(D)
 
+controller = Controller()
 
 if __name__ == '__main__':
-    controller = Controller()
+    pass
