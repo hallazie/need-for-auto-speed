@@ -1,7 +1,7 @@
 # --*-- utf-8 --*--
 # @Author: Xiao Shanghua
 # @Date: 2020-04-21 00:49:58
-# @LastEditTime: 2020-04-21 01:15:12
+# @LastEditTime: 2020-04-21 02:06:30
 # @LastEditors: Xiao Shanghua
 # @Description: 
 # @FilePath: \machinelearning\vision\need-for-auto-speed\process\frame_catch.py
@@ -12,6 +12,8 @@ from PIL import ImageGrab
 import numpy as np
 import time
 import os
+
+from percept.process import processer
 
 class FrameCatch:
     def __init__(self):
