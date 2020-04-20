@@ -1,7 +1,7 @@
 # --*-- utf-8 --*--
 # @Author: harryhan618
 # @Date: 2020-04-17 00:34:26
-# @LastEditTime: 2020-04-17 00:45:41
+# @LastEditTime: 2020-04-19 15:10:37
 # @LastEditors: Xiao Shanghua
 # @Description: Model for lanenet
 # @FilePath: \machinelearning\vision\need-for-auto-speed\percept\lanenet\model.py
