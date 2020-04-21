@@ -17,7 +17,7 @@ class Process:
         pass
 
     def _init_test(self):
-        self.img1 = cv2.imread(os.path.join(os.sep.join(__file__.split(os.sep)[:-2]), 'data', 'click-frame-sample', 'frame-100.jpg'))
+        self.img1 = cv2.imread(os.path.join(os.sep.join(__file__.split(os.sep)[:-2]), 'data', 'click-frame-sample', 'frame-1380.jpg'))
         self.img2 = cv2.imread(os.path.join(os.sep.join(__file__.split(os.sep)[:-2]), 'data', 'click-frame-sample', 'frame-1400.jpg'))
 
     @staticmethod
@@ -62,7 +62,7 @@ processer = Process()
 
 if __name__ == '__main__':
     processer._init_test()
-    # flow = processer.optical_flow(processer.img1, processer.img2)
-    # processer.imshow('optical', processer.img1, processer.img2, flow)
-    edge = processer.edge_detect(processer.img1)
-    processer.imshow('edge', processer.img1, edge)
+    flow = processer.optical_flow(processer.img1, processer.img2)
+    processer.imshow('optical', processer.img1, processer.img2, flow)
+    # edge = processer.edge_detect(processer.img1)
+    # processer.imshow('edge', processer.img1, edge)
