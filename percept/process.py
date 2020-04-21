@@ -1,7 +1,7 @@
 # --*-- utf-8 --*--
 # @Author: Xiao Shanghua
 # @Date: 2020-04-13 00:32:55
-# @LastEditTime: 2020-04-21 02:03:20
+# @LastEditTime: 2020-04-22 00:42:49
 # @LastEditors: Xiao Shanghua
 # @Description: 
 # @FilePath: \machinelearning\vision\need-for-auto-speed\percept\process.py
@@ -17,8 +17,8 @@ class Process:
         pass
 
     def _init_test(self):
-        self.img1 = cv2.imread(os.path.join(os.sep.join(__file__.split(os.sep)[:-2]), 'data', 'click-frame-sample', 'frame-1380.jpg'))
-        self.img2 = cv2.imread(os.path.join(os.sep.join(__file__.split(os.sep)[:-2]), 'data', 'click-frame-sample', 'frame-1400.jpg'))
+        self.img1 = cv2.imread(os.path.join(os.sep.join(__file__.split(os.sep)[:-2]), 'data', 'click-frame', 'frame-4495.jpg'))
+        self.img2 = cv2.imread(os.path.join(os.sep.join(__file__.split(os.sep)[:-2]), 'data', 'click-frame', 'frame-4500.jpg'))
 
     @staticmethod
     def optical_flow(previous_, current_):
@@ -62,7 +62,7 @@ processer = Process()
 
 if __name__ == '__main__':
     processer._init_test()
-    flow = processer.optical_flow(processer.img1, processer.img2)
-    processer.imshow('optical', processer.img1, processer.img2, flow)
-    # edge = processer.edge_detect(processer.img1)
-    # processer.imshow('edge', processer.img1, edge)
+    # flow = processer.optical_flow(processer.img1, processer.img2)
+    # processer.imshow('optical', processer.img1, processer.img2, flow)
+    edge = processer.edge_detect(processer.img1)
+    processer.imshow('edge', processer.img1, edge)

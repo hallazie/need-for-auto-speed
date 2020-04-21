@@ -1,4 +1,10 @@
-# coding:utf-8
+# --*-- utf-8 --*--
+# @Author: Xiao Shanghua
+# @Date: 2020-04-21 22:47:23
+# @LastEditTime: 2020-04-22 01:06:58
+# @LastEditors: Xiao Shanghua
+# @Description: 
+# @FilePath: \machinelearning\vision\need-for-auto-speed\neural\block.py
 
 import torch
 import torch.nn as nn
@@ -21,4 +27,15 @@ class Conv2DBlock(nn.Module):
         x = self.conv(x)
         x = self.bn(x)
         x = self.relu(x)
+        return x
+
+class PoolingBlock(nn.Module):
+    def __init__(self, pool_type, kernel_size, stride):
+        if pool_type == 'avg':
+            self.pool = nn.AvgPool2d(kernel_size=kernel_size, stride=stride)
+        else:
+            self.pool = nn.MaxPool2d(kernel_size=kernel_size, stride=stride)
+    
+    def forward(self, x):
+        x = self.pool(x)
         return x

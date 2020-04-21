@@ -1,7 +1,7 @@
 # --*-- utf-8 --*--
 # @Author: Xiao Shanghua
 # @Date: 2020-04-21 00:49:58
-# @LastEditTime: 2020-04-21 02:06:30
+# @LastEditTime: 2020-04-22 00:34:53
 # @LastEditors: Xiao Shanghua
 # @Description: 
 # @FilePath: \machinelearning\vision\need-for-auto-speed\process\frame_catch.py
@@ -13,12 +13,12 @@ import numpy as np
 import time
 import os
 
-from percept.process import processer
+# from percept.process import processer
 
 class FrameCatch:
     def __init__(self):
         self.frame_count = 0
-        self.frame_click = 20
+        self.frame_click = 5
         self.frame_save_path = os.path.join(os.sep.join(__file__.split(os.sep)[:-2]), 'data', 'click-frame', 'frame-%s.jpg')
 
     def click_catch(self):
