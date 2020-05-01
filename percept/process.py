@@ -1,7 +1,7 @@
 # --*-- utf-8 --*--
 # @Author: Xiao Shanghua
 # @Date: 2020-04-13 00:32:55
-# @LastEditTime: 2020-04-22 00:42:49
+# @LastEditTime: 2020-05-01 12:33:16
 # @LastEditors: Xiao Shanghua
 # @Description: 
 # @FilePath: \machinelearning\vision\need-for-auto-speed\percept\process.py
@@ -34,10 +34,33 @@ class Process:
         return flow
 
     @staticmethod
+    def hough_transfer(image):
+        lines = cv2.HoughLinesP(image, 1, np.pi/180, 180, 20, 15)
+        return lines
+
+    @staticmethod
+    def draw_lines(image, lines):
+        try:
+            for line in lines:
+                coords = line[0]
+                cv2.line(image, (coords[0],coords[1]), (coords[2],coords[3]), [255,255,255], 1)
+        except:
+            pass
+        finally:
+            return image
+
+    @staticmethod
     def edge_detect(image):
         edge = cv2.Canny(image, threshold1 = 200, threshold2=300)
         edge = cv2.GaussianBlur(edge,(5,5),0)
         return edge
+
+    @staticmethod
+    def roi_cropping(image, points):
+        mask = np.zeros_like(image)
+        cv2.fillPoly(mask, [points], 255)
+        masked = cv2.bitwise_and(image, mask)
+        return masked
 
     @staticmethod
     def imshow(t, *args):
@@ -56,6 +79,11 @@ class Process:
             plt.imshow(args[0]), plt.axis('off')
             plt.subplot(1,2,2), plt.title('edge')
             plt.imshow(args[1]), plt.axis('off')
+            plt.show()
+        elif t == 'single':
+            plt.suptitle('single image')
+            plt.subplot(1,1,1), plt.title('single')
+            plt.imshow(args[0]), plt.axis('off')
             plt.show()
 
 processer = Process()
