@@ -11,14 +11,15 @@ from cv2 import cv2
 import matplotlib.pyplot as plt
 import numpy as np
 import os
+import math
 
 class Process:
     def __init__(self):
         pass
 
     def _init_test(self):
-        self.img1 = cv2.imread(os.path.join(os.sep.join(__file__.split(os.sep)[:-2]), 'data', 'click-frame', 'frame-4495.jpg'))
-        self.img2 = cv2.imread(os.path.join(os.sep.join(__file__.split(os.sep)[:-2]), 'data', 'click-frame', 'frame-4500.jpg'))
+        self.img1 = cv2.imread(os.path.join(os.sep.join(__file__.split(os.sep)[:-2]), 'data', 'click-frame-sample', 'frame-2000.jpg'))
+        self.img2 = cv2.imread(os.path.join(os.sep.join(__file__.split(os.sep)[:-2]), 'data', 'click-frame-sample', 'frame-2020.jpg'))
 
     @staticmethod
     def optical_flow(previous_, current_):
@@ -63,6 +64,28 @@ class Process:
         return masked
 
     @staticmethod
+    def fft(image):
+        if len(image.shape) == 3:
+            image = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+        fft2 = np.fft.fft2(image)
+        fshift = np.fft.fftshift(fft2)
+        result = 20 * np.log(np.abs(fshift))
+        return result
+
+    @staticmethod
+    def to_gray(image):
+        if len(image.shape) == 3:
+            image = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+        return image
+
+    @staticmethod
+    def equalizer(image):
+        if len(image.shape) == 3:
+            image = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+        eq = cv2.equalizeHist(image)
+        return eq
+
+    @staticmethod
     def imshow(t, *args):
         if t == 'optical':
             plt.suptitle('optical flow')
@@ -85,6 +108,13 @@ class Process:
             plt.subplot(1,1,1), plt.title('single')
             plt.imshow(args[0]), plt.axis('off')
             plt.show()
+        elif t == 'random':
+            size = len(args)
+            height = math.ceil(size / 2.0)
+            for i in range(size):
+                plt.subplot(2, height, i+1)
+                plt.imshow(args[i])
+            plt.show()
 
 processer = Process()
 
@@ -92,5 +122,8 @@ if __name__ == '__main__':
     processer._init_test()
     # flow = processer.optical_flow(processer.img1, processer.img2)
     # processer.imshow('optical', processer.img1, processer.img2, flow)
-    edge = processer.edge_detect(processer.img1)
-    processer.imshow('edge', processer.img1, edge)
+    gray = processer.to_gray(processer.img1)
+    eq = processer.equalizer(processer.img1)
+    edge = processer.edge_detect(eq)
+    edge2 = processer.edge_detect(gray)
+    processer.imshow('random', gray, eq, edge2, edge)
