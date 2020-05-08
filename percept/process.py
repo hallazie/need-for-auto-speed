@@ -73,6 +73,30 @@ class Process:
         return result
 
     @staticmethod
+    def feature_extraction(image):
+        if len(image.shape) == 3:
+            image = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+        akaze = cv2.AKAZE_create()
+        kps = akaze.detect(image, None)
+        draw = image.copy()
+        draw = cv2.drawKeypoints(image, kps, draw)
+        return draw, kps
+
+    @staticmethod
+    def corner_extraction(image):
+        if len(image.shape) == 3:
+            gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+        else:
+            gray = image.copy()
+        dst = cv2.cornerHarris(image, 2, 3, 0.04)
+        print('before dilate size:', dst.shape)
+        dst = cv2.dilate(dst, None)
+        print('after dilate size:', dst.shape)
+        image = cv2.cvtColor(gray, cv2.COLOR_GRAY2BGR)
+        image[dst > 0.01 * dst.max()] = [0, 0, 255]
+        return image, dst
+
+    @staticmethod
     def to_gray(image):
         if len(image.shape) == 3:
             image = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
@@ -126,4 +150,6 @@ if __name__ == '__main__':
     eq = processer.equalizer(processer.img1)
     edge = processer.edge_detect(eq)
     edge2 = processer.edge_detect(gray)
-    processer.imshow('random', gray, eq, edge2, edge)
+    feature, _ = processer.feature_extraction(gray)
+    corner, _ = processer.corner_extraction(gray)
+    processer.imshow('random', gray, eq, edge2, edge, feature, corner)
