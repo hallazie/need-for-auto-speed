@@ -1,7 +1,7 @@
 # --*-- utf-8 --*--
 # @Author: Xiao Shanghua
 # @Date: 2020-04-24 00:54:03
-# @LastEditTime: 2020-04-24 01:13:51
+# @LastEditTime: 2020-05-10 18:48:49
 # @LastEditors: Xiao Shanghua
 # @Description: 
 # @FilePath: \machinelearning\vision\need-for-auto-speed\percept\speed-estimate\dataloader.py
@@ -17,6 +17,9 @@ import random
 random.seed(30)
 
 class SpeedMeterDS(Dataset):
+    '''
+        input size: 256
+    '''
     def __init__(self, root, height, width):
         super(SpeedMeterDS, cls).__init__()
         self.root = root
