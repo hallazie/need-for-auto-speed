@@ -29,9 +29,10 @@ class SpeedMeterDS(Dataset):
         self.width = width
         self.item_list = []
         self.transform = transforms.Compose(
-            [transforms.Grayscale(1),
-             transforms.ToTensor(),
-             transforms.Normalize(mean=[0.456], std=[0.224])
+            [
+                # transforms.Grayscale(1),
+                transforms.ToTensor(),
+                transforms.Normalize(mean=[0.456], std=[0.224])
              ])
         self._init_data()
 
@@ -50,8 +51,11 @@ class SpeedMeterDS(Dataset):
         prefix = self.item_list[index]
         img_name = prefix + '.jpg'
         lbl_name = prefix + '.json'
-        img = Image.open(os.path.join(self.root, img_name)).convert('L')
-        lbl = int(json.load(os.path.join(self.root, lbl_name))['shapes'][0]['label'])
+        lbl_box = json.load(open(os.path.join(self.root, lbl_name), 'r'))['shapes'][0]
+        box = lbl_box['points']
+        lbl = int(lbl_box['label'])
+        img = Image.open(os.path.join(self.root, img_name)).crop((int(box[0][0]), int(box[0][1]), int(box[1][0]), int(box[1][1]))).resize((self.width, self.height), Image.BICUBIC)
+        img.save('../../data/output/tmp.jpg')
         return prefix, self.transform(img), lbl
 
 

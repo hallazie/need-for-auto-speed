@@ -1,2 +1,10 @@
+data/click-frame/
+data/click-frame-speedmeter/
 click-frame/
 click-frame-speedmeter/
+data/model/*
+data/output/*
+*.jpg
+*.jpeg
+*.json
+*.weight
