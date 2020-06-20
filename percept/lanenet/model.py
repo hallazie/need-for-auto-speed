@@ -11,6 +11,7 @@ import torch.nn as nn
 import torch.nn.functional as F
 import torchvision.models as models
 
+
 class LaneNet(nn.Module):
     def __init__(
             self,
@@ -156,11 +157,7 @@ class LaneNet(nn.Module):
                 dist = torch.norm(centroid_mean1-centroid_mean2, dim=2)  # shape (num_lanes, num_lanes)
                 dist = dist + torch.eye(num_lanes, dtype=dist.dtype, device=dist.device) * self.delta_d  # diagonal elements are 0, now mask above delta_d
 
-                # divided by two for double calculated loss above, for implementation convenience
                 dist_loss = dist_loss + torch.sum(F.relu(-dist + self.delta_d)**2) / (num_lanes * (num_lanes-1)) / 2
-
-            # reg_loss is not used in original paper
-            # reg_loss = reg_loss + torch.mean(torch.norm(centroid_mean, dim=1))
 
         var_loss = var_loss / batch_size
         dist_loss = dist_loss / batch_size
