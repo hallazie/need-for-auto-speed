@@ -14,15 +14,18 @@ import torch.functional as F
 
 
 class Conv2DBlock(nn.Module):
-    def __init__(self, in_channel, out_channel, kernel_size, stride=1, padding=1):
+    def __init__(self, in_channel, out_channel, kernel_size, stride=1, padding=1, activation='relu'):
         super().__init__()
         self.conv = nn.Conv2d(in_channel, out_channel, kernel_size, stride=stride, padding=padding)
-        # self.bn = nn.BatchNorm2d(out_channel)
-        self.relu = nn.ReLU(inplace=True)
+        self.bn = nn.BatchNorm2d(out_channel)
+        if activation == 'sigmoid':
+            self.relu = nn.Sigmoid()
+        else:
+            self.relu = nn.ReLU(inplace=True)
 
     def forward(self, x):
         x = self.conv(x)
-        # x = self.bn(x)
+        x = self.bn(x)
         x = self.relu(x)
         return x
 

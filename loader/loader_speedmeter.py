@@ -43,6 +43,13 @@ class SpeedMeterDS(Dataset):
         y0, y1 = min(box[0][1], box[1][1]), max(box[0][1], box[1][1])
         return [[x0, y0], [x1, y1]]
 
+    @staticmethod
+    def _random_attack(img):
+        w, h = img.size
+        x0, x1 = random.randint(0, w//5), random.randint(0, w//5)
+        y0, y1 = random.randint(0, h//5), random.randint(0, h//5)
+        return img.crop((0+x0, 0+y0, w-x1, h-y1))
+
     def _init_data(self):
         for _, _, fs in os.walk(self.root):
             for f in fs:
@@ -63,8 +70,9 @@ class SpeedMeterDS(Dataset):
         lbl = int(lbl_box['label'])
         # lbl = math.log(int(lbl_box['label'])+1)
         vec = speed_to_vec(lbl)
-        raw = Image.open(os.path.join(self.root, img_name))
-        img = raw.crop((int(box[0][0]), int(box[0][1]), int(box[1][0]), int(box[1][1]))).resize((self.width, self.height), Image.BICUBIC)
+        raw = Image.open(os.path.join(self.root, img_name)).crop((int(box[0][0]), int(box[0][1]), int(box[1][0]), int(box[1][1])))
+        raw = self._random_attack(raw)
+        img = raw.resize((self.width, self.height), Image.BICUBIC)
         return prefix, self.transform(img), vec
 
 

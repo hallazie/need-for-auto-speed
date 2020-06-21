@@ -32,17 +32,15 @@ def speed_to_vec(speed):
 
 
 def vec_to_speed(vec):
-    s1 = [str(i) for i in range(10) if vec[i] == 1]
-    s2 = [str(i) for i in range(10) if vec[10+i] == 1]
-    s3 = [str(i) for i in range(10) if vec[20+i] == 1]
-    ss = (s1[0] if len(s1) == 1 else '0') + (s2[0] if len(s2) == 1 else '0') + (s3[0] if len(s3) == 1 else '0')
+    s1 = np.argmax(np.array(vec[:10]))
+    s2 = np.argmax(np.array(vec[10:20]))
+    s3 = np.argmax(np.array(vec[20:30]))
+    ss = str(s1) + str(s2) + str(s3)
     return int(ss)
 
 
 if __name__ == '__main__':
     print(speed_to_vec(143))
+    print(vec_to_speed(speed_to_vec(243)))
     print(speed_to_vec(1))
-    print(vec_to_speed((speed_to_vec(145))))
-    print(vec_to_speed((speed_to_vec(986))))
-    print(vec_to_speed((speed_to_vec(9999))))
-    print(vec_to_speed((speed_to_vec(-2))))
+    print(vec_to_speed([0.28204027, 0.7356036, 0.3616177, 0.50450927, 0.44730622, 0.46925727, 0.2946604, 0.32755107, 0.5407517, 0.73662645, 0.49820295, 0.35801214, 0.44046822, 0.92693216, 0.36902648, 0.3588559, 0.43562058, 0.6000769, 0.5352033, 0.1441437, 0.3043302, 0.500643, 0.4520338, 0.37544662, 0.31462455, 0.8753471, 0.4375557, 0.39101076, 0.45179933, 0.40260974]))

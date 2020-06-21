@@ -42,7 +42,7 @@ class SpeedMeterModel(nn.Module):
             PoolingBlock('max', 2, 2),  # 2
             Conv2DBlock(16, 16, 3),
             PoolingBlock('max', 2, 2),  # 1
-            Conv2DBlock(16, 30, 3),
+            Conv2DBlock(16, 30, 3, activation='sigmoid'),
         )
 
     def forward(self, x):
@@ -52,7 +52,7 @@ class SpeedMeterModel(nn.Module):
 class SpeedMeterInference:
     def __init__(self, is_train=False):
         self.is_train = is_train
-        self.epoch = 1000
+        self.epoch = 5000
         self.lr = 1e-3
         self.batch_size = 128
         self.width = 64
@@ -79,7 +79,7 @@ class SpeedMeterInference:
         logger.info('dataset init finished with size: %s' % len(dataset))
         loader = DataLoader(dataset, batch_size=self.batch_size, shuffle=True)
         optimizer = Adam(model.parameters(), lr=self.lr)
-        loss_func = nn.MSELoss()
+        loss_func = nn.BCELoss()
 
         for e in range(self.epoch):
             model.train()
@@ -93,8 +93,8 @@ class SpeedMeterInference:
                     loss.backward()
                     optimizer.step()
                     optimizer.zero_grad()
-                except Exception as e:
-                    logger.error(e)
+                except Exception as err:
+                    logger.error(err)
             if e % 10 == 0 and e > 0:
                 torch.save(model, self.model_path)
 
@@ -105,18 +105,19 @@ class SpeedMeterInference:
     def test(self):
         self._init_model()
         f_list = []
-        for _, _, fs in os.walk('../../data/click-frame'):
+        for _, _, fs in os.walk('../../data/click-frame-speedmeter'):
             for f in fs:
-                if f.endswith('jpg'):
-                    f_list.append(f)
+                if f.endswith('json'):
+                    f_list.append(f.split('.')[0]+'.jpg')
         random.shuffle(f_list)
         for f in f_list[:100]:
-            img = Image.open('../../data/click-frame/%s' % f)
+            img = Image.open('../../data/click-frame-speedmeter/%s' % f)
             w, h = img.size
-            meter = img.crop((w-120, h-80, w, h)).resize((self.width, self.height))
-            speed = self.predict(meter)
+            meter = img.crop((w-120, h-80, w, h)).resize((self.width, self.height), Image.BICUBIC)
+            vec = self.predict(meter)
+            speed = vec_to_speed(vec)
             logger.info('predicted speed: %s' % speed)
-            img.save('../../data/output/%s-%s.jpg' % (f.split('.')[0], speed))
+            meter.save('../../data/output/%s-%s.jpg' % (f.split('.')[0], speed))
 
     def predict(self, img):
         img = self.transform(img).to(self.device)
@@ -127,6 +128,6 @@ class SpeedMeterInference:
 
 if __name__ == '__main__':
     logger.setLevel(logging.INFO)
-    speed_meter_inf = SpeedMeterInference()
+    speed_meter_inf = SpeedMeterInference(True)
     speed_meter_inf.train()
-    # speed_meter_inf.test()
+    speed_meter_inf.test()
