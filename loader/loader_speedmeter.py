@@ -9,7 +9,9 @@
 from torch.utils.data import DataLoader, Dataset
 from torchvision import transforms
 from PIL import Image
+from utils.common import speed_to_vec
 
+import math
 import os
 import json
 import random
@@ -19,7 +21,7 @@ random.seed(30)
 
 class SpeedMeterDS(Dataset):
     '''
-        input size: 256
+        input size: 64
     '''
 
     def __init__(self, root, height, width):
@@ -30,11 +32,16 @@ class SpeedMeterDS(Dataset):
         self.item_list = []
         self.transform = transforms.Compose(
             [
-                # transforms.Grayscale(1),
                 transforms.ToTensor(),
                 transforms.Normalize(mean=[0.456], std=[0.224])
              ])
         self._init_data()
+
+    @staticmethod
+    def _norm_box(box):
+        x0, x1 = min(box[0][0], box[1][0]), max(box[0][0], box[1][0])
+        y0, y1 = min(box[0][1], box[1][1]), max(box[0][1], box[1][1])
+        return [[x0, y0], [x1, y1]]
 
     def _init_data(self):
         for _, _, fs in os.walk(self.root):
@@ -52,11 +59,13 @@ class SpeedMeterDS(Dataset):
         img_name = prefix + '.jpg'
         lbl_name = prefix + '.json'
         lbl_box = json.load(open(os.path.join(self.root, lbl_name), 'r'))['shapes'][0]
-        box = lbl_box['points']
+        box = self._norm_box(lbl_box['points'])
         lbl = int(lbl_box['label'])
-        img = Image.open(os.path.join(self.root, img_name)).crop((int(box[0][0]), int(box[0][1]), int(box[1][0]), int(box[1][1]))).resize((self.width, self.height), Image.BICUBIC)
-        img.save('../../data/output/tmp.jpg')
-        return prefix, self.transform(img), lbl
+        # lbl = math.log(int(lbl_box['label'])+1)
+        vec = speed_to_vec(lbl)
+        raw = Image.open(os.path.join(self.root, img_name))
+        img = raw.crop((int(box[0][0]), int(box[0][1]), int(box[1][0]), int(box[1][1]))).resize((self.width, self.height), Image.BICUBIC)
+        return prefix, self.transform(img), vec
 
 
 class OpticalFlowDS(Dataset):

@@ -1,3 +1,5 @@
+.idea
+__pycache__
 data/click-frame/
 data/click-frame-speedmeter/
 click-frame/
@@ -8,3 +10,4 @@ data/output/*
 *.jpeg
 *.json
 *.weight
+tmp.py
