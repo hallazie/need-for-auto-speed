@@ -107,7 +107,7 @@ class SpeedMeterInference:
         f_list = []
         for _, _, fs in os.walk('../../data/click-frame-speedmeter'):
             for f in fs:
-                if f.endswith('json'):
+                if f.endswith('jpg'):
                     f_list.append(f.split('.')[0]+'.jpg')
         random.shuffle(f_list)
         for f in f_list[:100]:
@@ -128,6 +128,6 @@ class SpeedMeterInference:
 
 if __name__ == '__main__':
     logger.setLevel(logging.INFO)
-    speed_meter_inf = SpeedMeterInference(True)
-    speed_meter_inf.train()
+    speed_meter_inf = SpeedMeterInference(False)
+    # speed_meter_inf.train()
     speed_meter_inf.test()
