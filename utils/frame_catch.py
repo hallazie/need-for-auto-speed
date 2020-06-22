@@ -15,6 +15,7 @@ import os
 
 # from percept.process import processer
 
+
 class FrameCatch:
     def __init__(self):
         self.frame_count = 0
@@ -23,7 +24,7 @@ class FrameCatch:
 
     def click_catch(self):
         while True:
-            screen =  np.array(ImageGrab.grab(bbox=(0,40,800,640)))
+            screen = np.array(ImageGrab.grab(bbox=(0,40,800,640)))
             cv2.imshow('window1', cv2.cvtColor(screen, cv2.COLOR_BGR2RGB))
 
             if self.frame_count % self.frame_click == 0:

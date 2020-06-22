@@ -7,6 +7,7 @@
 # @FilePath: \machinelearning\vision\need-for-auto-speed\percept\processor.py
 
 from cv2 import cv2
+from config import logger
 
 import matplotlib.pyplot as plt
 import numpy as np
@@ -15,6 +16,9 @@ import math
 
 
 class Process:
+    """
+    图像处理工具类
+    """
     def __init__(self):
         pass
 
@@ -26,6 +30,12 @@ class Process:
 
     @staticmethod
     def optical_flow(previous_, current_):
+        """
+        光流
+        :param previous_:
+        :param current_:
+        :return:
+        """
         previous = cv2.cvtColor(previous_, cv2.COLOR_BGR2GRAY)
         current = cv2.cvtColor(current_, cv2.COLOR_BGR2GRAY)
         flow = cv2.calcOpticalFlowFarneback(previous, current, None, 0.5, 3, 15, 3, 5, 1.2, 0)
@@ -39,28 +49,51 @@ class Process:
 
     @staticmethod
     def hough_transfer(image):
+        """
+        hough变换，在图像中找到所有直线
+        :param image:
+        :return:
+        """
         lines = cv2.HoughLinesP(image, 1, np.pi / 180, 180, 20, 15)
         return lines
 
     @staticmethod
     def draw_lines(image, lines):
+        """
+        在图像上画线，方便观察
+        :param image:
+        :param lines:
+        :return:
+        """
         try:
             for line in lines:
                 coords = line[0]
                 cv2.line(image, (coords[0], coords[1]), (coords[2], coords[3]), [255, 255, 255], 1)
-        except:
-            pass
+        except Exception as e:
+            logger.error('line drawing error')
         finally:
             return image
 
     @staticmethod
     def edge_detect(image):
+        """
+        使用canny变换进行边缘检测
+        不适用sobel等算子，canny更平滑
+        :param image:
+        :return:
+        """
         edge = cv2.Canny(image, threshold1=200, threshold2=300)
         edge = cv2.GaussianBlur(edge, (5, 5), 0)
         return edge
 
     @staticmethod
     def roi_cropping(image, points):
+        """
+        将游戏画面裁剪，只保留道路相关区域，丢弃天空等无关信息
+        :param image:
+        :param points:
+        :return:
+        """
         mask = np.zeros_like(image)
         cv2.fillPoly(mask, [points], 255)
         masked = cv2.bitwise_and(image, mask)
@@ -68,6 +101,11 @@ class Process:
 
     @staticmethod
     def fft(image):
+        """
+        快速傅里叶变换，没用到
+        :param image:
+        :return:
+        """
         if len(image.shape) == 3:
             image = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
         fft2 = np.fft.fft2(image)
@@ -77,6 +115,11 @@ class Process:
 
     @staticmethod
     def feature_extraction(image):
+        """
+        特征点检测，没用到
+        :param image:
+        :return:
+        """
         if len(image.shape) == 3:
             image = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
         akaze = cv2.AKAZE_create()
@@ -87,6 +130,11 @@ class Process:
 
     @staticmethod
     def corner_extraction(image):
+        """
+        角点检测，没用到
+        :param image:
+        :return:
+        """
         if len(image.shape) == 3:
             gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
         else:
@@ -148,8 +196,6 @@ processor = Process()
 
 if __name__ == '__main__':
     processor._init_test()
-    # flow = processer.optical_flow(processer.img1, processer.img2)
-    # processer.imshow('optical', processer.img1, processer.img2, flow)
     gray = processor.to_gray(processor.img1)
     eq = processor.equalizer(processor.img1)
     edge = processor.edge_detect(eq)

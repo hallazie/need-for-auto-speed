@@ -7,8 +7,10 @@
 # @FilePath: \machinelearning\vision\need-for-auto-speed\control\controller.py
 
 from control.keyboard import *
+from items import HiddenState
 
 import numpy as np
+
 
 class Controller:
     _instance = None
@@ -19,15 +21,25 @@ class Controller:
         return cls._instance
 
     def __init__(self):
-        self.hidden_state = {}
+        self.hidden_state = HiddenState()
+        self.history = []
 
     def react(self, perception):
-        '''
-            current perception + hidden state -> current control stratage
-        '''
+        """
+        实时策略，由perception和hidden state共同决定使用下面哪些操作，暂时用if-else
+        TODO 使用策略配置文件简化
+        :param perception:
+        :return:
+        """
         pass
 
-    def react_basic(self, direct):
+    @staticmethod
+    def react_basic(direct):
+        """
+        最简单的控制，验证按键反馈的
+        :param direct:
+        :return:
+        """
         if direct == 'left':
             keyboard.release(D)
             keyboard.release(S)
@@ -54,7 +66,46 @@ class Controller:
             keyboard.release(A)
             keyboard.release(D)
 
-controller = Controller()
+    @staticmethod
+    def slow_down(vol):
+        """
+        减速，根据vol值决定减速程度
+        :param vol: uint
+        :return:
+        """
+        pass
 
-if __name__ == '__main__':
-    pass
+    @staticmethod
+    def speed_up(vol):
+        """
+        加速，根据vol值决定加速程度
+        :param vol: uint
+        :return:
+        """
+        pass
+
+    @staticmethod
+    def hard_brake():
+        """
+        急刹车，正面刹死
+        :return:
+        """
+
+    @staticmethod
+    def drift_brake():
+        """
+        漂移时的轻点刹车，估计做不出来
+        :return:
+        """
+        pass
+
+    def speed_limit(self, limit):
+        """
+        定速巡航
+        :param limit: 定速值，KMpH
+        :return:
+        """
+        if self.hidden_state.speed > limit:
+            self.slow_down(self.hidden_state.speed-limit)
+        elif self.hidden_state.speed < limit:
+            self.speed_limit(limit-self.hidden_state.speed)

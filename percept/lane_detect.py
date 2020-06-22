@@ -7,9 +7,8 @@
 # @FilePath: \machinelearning\vision\need-for-auto-speed\percept\lane_detect.py
 
 from cv2 import cv2 as cv2
-from processor import processor
+from utils.processor import processor
 
-import os
 import numpy as np
 
 

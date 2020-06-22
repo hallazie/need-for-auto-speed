@@ -4,7 +4,7 @@
 # @LastEditTime: 2020-04-22 01:16:10
 # @LastEditors: Xiao Shanghua
 # @Description: recognize speed meter on need for speed frame
-# @FilePath: \machinelearning\vision\need-for-auto-speed\percept\speed-estimate\speedmeter_estimate.py
+# @FilePath: \machinelearning\vision\need-for-auto-speed\percept\speed_estimate\speedmeter_estimate.py
 import os
 import random
 
@@ -57,7 +57,7 @@ class SpeedMeterInference:
         self.batch_size = 128
         self.width = 64
         self.height = 64
-        self.model_path = '/'.join(__file__.split('/')[:-3] + ['data', 'model', 'speed-estimate-speedmeter.weight'])
+        self.model_path = '/'.join(__file__.split('/')[:-3] + ['data', 'model', 'speed_estimate-speedmeter.weight'])
         self.data_path = '/'.join(__file__.split('/')[:-3] + ['data', 'click-frame-speedmeter'])
         self.device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
         self.transform = transforms.Compose([transforms.ToTensor(), transforms.Normalize(mean=[0.456], std=[0.224])])

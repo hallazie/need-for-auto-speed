@@ -15,8 +15,6 @@ import logging
 from torch.utils.data import DataLoader
 from torch.autograd import Variable
 
-
-
 logger_name = 'train_logger'
 logger = logging.getLogger(logger_name)
 

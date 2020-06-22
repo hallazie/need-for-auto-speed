@@ -17,9 +17,10 @@ A = 0x1E
 S = 0x1F
 D = 0x20
 
+
 class Keyboard:
     _instance = None
-    
+
     def __new__(cls, *args, **kws):
         if not cls._instance:
             cls._instance = super(Keyboard, cls).__new__(cls, *args, **kws)
@@ -32,16 +33,17 @@ class Keyboard:
     def press(hex_key):
         extra = ctypes.c_ulong(0)
         ii_ = Input_I()
-        ii_.ki = KeyBdInput( 0, hex_key, 0x0008, 0, ctypes.pointer(extra) )
-        x = Input( ctypes.c_ulong(1), ii_ )
+        ii_.ki = KeyBdInput(0, hex_key, 0x0008, 0, ctypes.pointer(extra))
+        x = Input(ctypes.c_ulong(1), ii_)
         ctypes.windll.user32.SendInput(1, ctypes.pointer(x), ctypes.sizeof(x))
 
     @staticmethod
     def release(hex_key):
         extra = ctypes.c_ulong(0)
         ii_ = Input_I()
-        ii_.ki = KeyBdInput( 0, hex_key, 0x0008 | 0x0002, 0, ctypes.pointer(extra) )
-        x = Input( ctypes.c_ulong(1), ii_ )
+        ii_.ki = KeyBdInput(0, hex_key, 0x0008 | 0x0002, 0, ctypes.pointer(extra))
+        x = Input(ctypes.c_ulong(1), ii_)
         ctypes.windll.user32.SendInput(1, ctypes.pointer(x), ctypes.sizeof(x))
+
 
 keyboard = Keyboard()
