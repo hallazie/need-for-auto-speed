@@ -16,6 +16,15 @@ class Obstacle:
         self.direction = direction
 
 
+class SensorData:
+    """
+    传感器数据，目前只有游戏画面帧
+    """
+    def __init__(self):
+        # 游戏帧
+        self.main_camera = None
+
+
 class HiddenState:
     """
     车辆当前状态

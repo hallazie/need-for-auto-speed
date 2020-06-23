@@ -6,7 +6,11 @@
 # @Description: 
 # @FilePath: \machinelearning\vision\need-for-auto-speed\pipeline.py
 
-from percept.speed_estimate.speedmeter_estimate import SpeedMeterInference
+from cv2 import cv2
+from utils.frame_catch import FrameCatcher
+from percept.percepter import Percepter
+from control.controller import Controller
+from items import SensorData
 from config import logger
 
 
@@ -25,8 +29,27 @@ class Pipeline:
         初始化各组件
         :return:
         """
-        self.speed_meter_inference = SpeedMeterInference(is_train=False)
-        self.controller = None
+        self.frame_catcher = FrameCatcher()
+        self.percepter = Percepter()
+        self.controller = Controller()
+
+    def _sensing(self):
+        sensor = SensorData()
+        frame = self.frame_catcher.loop_catch()
+        sensor.main_camera = frame
+        return sensor
+
+    def run(self):
+        logger.info('pipeline start running main loop...')
+        while True:
+            sensor = self._sensing()
+            state = self.percepter.run(sensor)
+            self.controller.react(state)
+            cv2.imshow('data frame', cv2.cvtColor(sensor.main_camera, cv2.COLOR_BGR2RGB))
+
+            if cv2.waitKey(25) & 0xFF == ord('q'):
+                cv2.destroyAllWindows()
+                break
 
 
 if __name__ == '__main__':

@@ -21,16 +21,17 @@ class Controller:
         return cls._instance
 
     def __init__(self):
-        self.hidden_state = HiddenState()
+        self.current_state = None
         self.history = []
 
-    def react(self, perception):
+    def react(self, state: HiddenState):
         """
         实时策略，由perception和hidden state共同决定使用下面哪些操作，暂时用if-else
         TODO 使用策略配置文件简化
-        :param perception:
+        :param state: 
         :return:
         """
+        self.current_state = state
         pass
 
     @staticmethod
@@ -105,7 +106,7 @@ class Controller:
         :param limit: 定速值，KMpH
         :return:
         """
-        if self.hidden_state.speed > limit:
-            self.slow_down(self.hidden_state.speed-limit)
-        elif self.hidden_state.speed < limit:
-            self.speed_limit(limit-self.hidden_state.speed)
+        if self.current_state.speed > limit:
+            self.slow_down(self.current_state.speed-limit)
+        elif self.current_state.speed < limit:
+            self.speed_limit(limit-self.current_state.speed)
