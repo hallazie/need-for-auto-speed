@@ -68,6 +68,21 @@ class Controller:
             keyboard.release(D)
 
     @staticmethod
+    def turn_direct(direct, vol):
+        """
+        左右转
+        :param direct: str, 'l' or 'r'
+        :param vol:
+        :return:
+        """
+        if direct == 'l':
+            # turn left
+            pass
+        elif direct == 'r':
+            # turn right
+            pass
+
+    @staticmethod
     def slow_down(vol):
         """
         减速，根据vol值决定减速程度
@@ -91,11 +106,21 @@ class Controller:
         急刹车，正面刹死
         :return:
         """
+        pass
+
+    @staticmethod
+    def tap_brake(vol):
+        """
+        轻点刹车
+        :param vol:
+        :return:
+        """
+        pass
 
     @staticmethod
     def drift_brake():
         """
-        漂移时的轻点刹车，估计做不出来
+        漂移时的轻点刹车，实际应该是speed up + tap brake的组合
         :return:
         """
         pass

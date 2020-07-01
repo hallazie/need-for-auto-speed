@@ -44,7 +44,7 @@ class SpeedMeterModel(nn.Module):
             PoolingBlock('max', 2, 2),  # 2
             Conv2DBlock(16, 16, 3),
             PoolingBlock('max', 2, 2),  # 1
-            Conv2DBlock(16, 30, 3, activation='sigmoid'),
+            Conv2DBlock(16, 24, 3, activation='sigmoid'),
         )
 
     def forward(self, x):
