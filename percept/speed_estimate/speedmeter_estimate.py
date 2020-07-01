@@ -31,6 +31,8 @@ class SpeedMeterModel(nn.Module):
         super().__init__()
         self.net = nn.Sequential(
             Conv2DBlock(3, 16, 3),
+            PoolingBlock('max', 2, 2),  # 64
+            Conv2DBlock(16, 16, 3),
             PoolingBlock('max', 2, 2),  # 32
             Conv2DBlock(16, 16, 3),
             PoolingBlock('max', 2, 2),  # 16
@@ -52,12 +54,12 @@ class SpeedMeterModel(nn.Module):
 class SpeedMeterInference:
     def __init__(self, is_train=False):
         self.is_train = is_train
-        self.epoch = 5000
+        self.epoch = 2000
         self.lr = 1e-3
         self.batch_size = 128
-        self.width = 64
-        self.height = 64
-        self.model_path = '/'.join(__file__.split('/')[:-3] + ['data', 'model', 'speed_estimate-speedmeter.weight'])
+        self.width = 128
+        self.height = 128
+        self.model_path = '/'.join(__file__.split('/')[:-3] + ['data', 'model', 'speed-estimate-speedmeter.weight'])
         self.data_path = '/'.join(__file__.split('/')[:-3] + ['data', 'click-frame-speedmeter'])
         self.device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
         self.transform = transforms.Compose([transforms.ToTensor(), transforms.Normalize(mean=[0.456], std=[0.224])])
@@ -128,6 +130,6 @@ class SpeedMeterInference:
 
 if __name__ == '__main__':
     logger.setLevel(logging.INFO)
-    speed_meter_inf = SpeedMeterInference(False)
-    # speed_meter_inf.train()
+    speed_meter_inf = SpeedMeterInference(True)
+    speed_meter_inf.train()
     speed_meter_inf.test()

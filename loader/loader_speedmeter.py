@@ -21,7 +21,7 @@ random.seed(30)
 
 class SpeedMeterDS(Dataset):
     '''
-        input size: 64
+        input size: 128
     '''
 
     def __init__(self, root, height, width):
